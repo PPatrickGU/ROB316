@@ -51,7 +51,7 @@ end
 
     u(1) = Krho * goalDist;
     u(2) = Kalpha * Kalpha*AngleToGoal;
-;
+
     
 end
 

@@ -7,7 +7,7 @@ function [ u ] = BicycleToPointControl( xTrue,xGoal )
 
 % TODO
 
-    Krho = 15;
+    Krho = 20;
     Kalpha = 10;
 
     error = xGoal-xTrue;
