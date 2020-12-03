@@ -50,7 +50,7 @@ end
     AngleToGoal = AngleWrap(atan2(error(2),error(1))-xTrue(3));
 
     u(1) = Krho * goalDist;
-    u(2) = Kalpha * Kalpha*AngleToGoal;
+    u(2) = Kalpha * Kalpha * AngleToGoal;
 
     
 end
