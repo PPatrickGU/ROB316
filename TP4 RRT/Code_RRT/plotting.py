@@ -31,7 +31,7 @@ class Plotting:
         self.plot_path(path)
 
     def plot_grid(self, name):
-        # fig, ax = plt.subplots()
+        #fig, ax = plt.subplots()
         plt.cla()
         for (ox, oy, w, h) in self.obs_bound:
             self.ax.add_patch(
@@ -82,7 +82,6 @@ class Plotting:
                                                  [exit(0) if event.key == 'escape' else None])
                     if count % 10 == 0:
                         plt.pause(0.001)
-                        # pass
         else:
             for node in nodelist:
                 if node.parent:
@@ -105,18 +104,13 @@ class Plotting:
 
             if k % 2 == 0:
                 plt.pause(0.001)
-                # pass
 
         plt.pause(0.01)
-        # pass
-
 
     @staticmethod
     def plot_path(path):
         if len(path) != 0:
             plt.plot([x[0] for x in path], [x[1] for x in path], '-r', linewidth=2)
-            # plt.pause(0.01)
-            pass
+            plt.pause(0.01)
         plt.pause(0.1)
-        # pass
         plt.show(block=False)

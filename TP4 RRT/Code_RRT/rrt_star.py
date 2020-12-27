@@ -190,9 +190,8 @@ def main():
     x_goal = (49, 24)  # Goal node
     environment = env.Env()
 
-    rrt_star = RrtStar(environment, x_start, x_goal, 0.1, 0.10, 20, 1000)
+    rrt_star = RrtStar(environment, x_start, x_goal, 2, 0.10, 20, 10000)
     rrt_star.planning()
-
 
 
 if __name__ == '__main__':
