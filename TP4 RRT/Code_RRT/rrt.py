@@ -66,7 +66,7 @@ class Rrt:
     #
     #     return Node((np.random.uniform(self.x_range[0] + delta, self.x_range[1] - delta),
     #                 np.random.uniform(self.y_range[0] + delta, self.y_range[1] - delta)))
-    #
+
     def generate_random_node(self, goal_sample_rate):
         if np.random.random() < goal_sample_rate:
             return self.s_goal
@@ -75,28 +75,27 @@ class Rrt:
 
         node = Node((np.random.uniform(self.x_range[0] + delta, self.x_range[1] - delta),
                      np.random.uniform(self.y_range[0] + delta, self.y_range[1] - delta)))
-        a = np.random.random()
 
-        delta = 8 * self.utils.delta
-        if a < 1:
+        if np.random.randn() < 0.6:
             while 1:
                 id = np.random.randint(len(self.env.obs_rectangle))
-                [x, y, w, h] = self.env.obs_rectangle[id]
 
-                node_list =[Node((np.random.uniform(x - delta, x),
-                                  np.random.uniform(y - delta, y + h + delta))),
-                            Node((np.random.uniform(x + w, x + w + delta),
-                                  np.random.uniform(y - delta, y + h + delta))),
-                            Node((np.random.uniform(x - delta, x + w + delta),
-                                  np.random.uniform(y - delta, y))),
-                            Node((np.random.uniform(x - delta, x + w + delta),
-                                  np.random.uniform(y + h, y + h + delta)))
-                            ]
-                node = node_list[np.random.randint(len(node_list))]
-
-                if not self.utils.is_inside_obs(node):
+                # node_list =[Node((np.random.uniform(self.env.obs_rectangle[id][0] - delta, self.env.obs_rectangle[id][0] + delta),
+                #                   np.random.uniform(self.env.obs_rectangle[id][1] - delta, self.env.obs_rectangle[id][1] + delta))),
+                #             Node((np.random.uniform(self.env.obs_rectangle[id][0] + self.env.obs_rectangle[id][2] - delta, self.env.obs_rectangle[id][0] + self.env.obs_rectangle[id][2] + delta),
+                #                   np.random.uniform(self.env.obs_rectangle[id][1] - delta, self.env.obs_rectangle[id][1] + delta))),
+                #             Node((np.random.uniform(self.env.obs_rectangle[id][0] - delta, self.env.obs_rectangle[id][0] + delta),
+                #                   np.random.uniform(self.env.obs_rectangle[id][1] + self.env.obs_rectangle[id][3] - delta, self.env.obs_rectangle[id][1] + self.env.obs_rectangle[id][3] + delta))),
+                #             Node((np.random.uniform(self.env.obs_rectangle[id][0] + self.env.obs_rectangle[id][2] - delta, self.env.obs_rectangle[id][0] + self.env.obs_rectangle[id][2] + delta),
+                #                   np.random.uniform(self.env.obs_rectangle[id][1] + self.env.obs_rectangle[id][3] - delta, self.env.obs_rectangle[id][1] + self.env.obs_rectangle[id][3] + delta)))
+                #             ]
+                # node = node_list[np.random.randint(4)]
+                node = Node((np.random.uniform(self.env.obs_rectangle[id][0] - delta, self.env.obs_rectangle[id][0] + delta),
+                             np.random.uniform(self.env.obs_rectangle[id][1] - delta, self.env.obs_rectangle[id][1] + delta)))
+                if self.utils.is_inside_obs(node):
                     break
         return node
+        
 
     @staticmethod
     def nearest_neighbor(node_list, n):
@@ -145,39 +144,32 @@ def main():
     x_goal = (49, 24)  # Goal node
     environment = env.Env2()
 
-    # rrt = Rrt(environment, x_start, x_goal, 2, 0.10, 10000)
-    # path, nb_iter = rrt.planning()
-    #
-    # if path:
-    #     print('Found path in ' + str(nb_iter) + ' iterations, length : ' + str(get_path_length(path)))
-    #     if showAnimation:
-    #         rrt.plotting.animation(rrt.vertex, path, "RRT", True)
-    #         plotting.plt.show()
-    # else:
-    #     print("No Path Found in " + str(nb_iter) + " iterations!")
-    #     if showAnimation:
-    #         rrt.plotting.animation(rrt.vertex, [], "RRT", True)
-    #         plotting.plt.show()
+    rrt = Rrt(environment, x_start, x_goal, 2, 0.10, 10000)
+    path, nb_iter = rrt.planning()
 
-    average_path = 0
-    average_iteration = 0
-    N = 50
-    counter = 0
-    for i in range(0,N):
-        rrt = Rrt(environment, x_start, x_goal, 2, 0.10, 1000)
-        path, nb_iter = rrt.planning()
-        if path:
-            average_path += get_path_length(path)
-            average_iteration += nb_iter
-            counter += 1
-    if counter > 0:
-        average_path = average_path/counter
-        average_iteration = average_iteration/counter
-        print('Found path case ' + str(counter) + ' in ' + str(N) + ' iterations')
-        print('Found path in ' + str(average_iteration) + ' iterations, length : ' + str(average_path))
+    if path:
+        print('Found path in ' + str(nb_iter) + ' iterations, length : ' + str(get_path_length(path)))
+        if showAnimation:
+            rrt.plotting.animation(rrt.vertex, path, "RRT", True)
+            plotting.plt.show()
     else:
-        print("No Path Found in " + str(nb_iter * N) + " iterations!")
+        print("No Path Found in " + str(nb_iter) + " iterations!")
+        if showAnimation:
+            rrt.plotting.animation(rrt.vertex, [], "RRT", True)
+            plotting.plt.show()
 
+    # average_path = 0
+    # average_iteration = 0
+    # N = 50
+    # for i in range(0,N):
+    #     rrt = Rrt(environment, x_start, x_goal, 2, 0.10, 10000)
+    #     path, nb_iter = rrt.planning()
+    #     if path:
+    #         average_path += get_path_length(path)/N
+    #         average_iteration += nb_iter/N
+    #     else:
+    #         print("No Path Found in " + str(nb_iter) + " iterations!")
+    # print('Found path in ' + str(average_iteration) + ' iterations, length : ' + str(average_path))
 
 
 if __name__ == '__main__':
