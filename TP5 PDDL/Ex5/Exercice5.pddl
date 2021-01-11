@@ -1,0 +1,7 @@
+(define (problem GRAPH-NOEUDs-9-0)
+(:domain NOEUDS)
+(:objects A B C D E F G H I)
+(:INIT (ON A) (arc A B) (arc A H) (arc B A) (arc B D) (arc B E) (arc C E) (arc C I) 
+        (arc C G) (arc D H) (arc D B) (arc D I) (arc E B) (arc E C) (arc F H)
+        (arc G C) (arc H F))
+(:goal (AND(ON F))))
